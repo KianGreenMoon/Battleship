@@ -13,19 +13,32 @@ class Board {
 
     boolean[] getState(int x, int y) {
         //get State
-        return getGrid()[y][x];
+        try {
+            return getGrid()[x][y];
+        } catch (Exception e) {
+            return new boolean[]{false, false};
+        }
     }
 
     void setState(int x, int y, boolean hasShip) {
         //set State
-        getGrid()[x][y][0] = hasShip;
+        try {
+            getGrid()[x][y][0] = hasShip;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     void setState(int x, int y, boolean hasShip, boolean isShooted) {
         //set State
-        setState(x, y, hasShip);
-        getGrid()[y][x][1] = isShooted;
+        try {
+            setState(x, y, hasShip);
+            getGrid()[x][y][1] = isShooted;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
+
     void visualBoard() {
         for (int i = 0; i < 10; i++) {
             System.out.print(i + "|");
@@ -34,15 +47,14 @@ class Board {
         int lineNumber = 0;
         for (boolean[][] a : getGrid()) {
             for (boolean[] b : a) {
-
-                if(!b[0] && !b[1])
+                //cell0 is ship; cell1 is shooted
+                if (!b[0] && !b[1])         //cell0 == false; cell1 == false;
                     System.out.print("~");
-                else if(!b[0] && b[1])
+                else if (!b[0])             //cell0 == false; cell1 == true;
                     System.out.print("*");
-                else if(b[0] && b[1])
+                else if (b[1])              //cell0 == true; cell1 == true;
                     System.out.print("X");
-                else if(b[0] && !b[1])
-                    System.out.print("#");
+                else System.out.print("#"); //cell0 == true; cell1 == false;
 
                 System.out.print("|");
             }
