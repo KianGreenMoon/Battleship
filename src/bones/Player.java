@@ -18,7 +18,7 @@ public class Player {
         setName(myName);
         myBoard = new Board();
         enemyBoard = new Board();
-        shipsCount = 0;
+        //shipsCount = 0;
     }
 
     public String getName() {
@@ -53,7 +53,7 @@ public class Player {
                     getMyBoard().setState(x, y + i, true);
                 }
             }
-            shipsCount++;
+            //shipsCount++;
         }
         catch (Exception e) {System.err.println("Bad variables for this Ship!");}
     }
@@ -86,6 +86,14 @@ public class Player {
         getMyBoard().visualBoard();
     }
     public boolean hasAnyShip() {
-        return getShipsCount() > 0;
+        //This is not good check, but working. Anyway, it should be change in future
+        for (boolean row[][] : getMyBoard().getGrid()) {
+            for (boolean cell[] : row) {
+                if (cell[0] && !cell[1])
+                    return true;
+            }
+        }
+        return false;
+        //return getShipsCount() > 0;
     }
 }

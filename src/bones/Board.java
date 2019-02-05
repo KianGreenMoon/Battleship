@@ -18,18 +18,22 @@ class Board {
 
     void setState(int x, int y, boolean hasShip) {
         //set State
-        getGrid()[y][x][0] = hasShip;
+        getGrid()[x][y][0] = hasShip;
     }
 
     void setState(int x, int y, boolean hasShip, boolean isShooted) {
         //set State
-        setState(y, x, hasShip);
+        setState(x, y, hasShip);
         getGrid()[y][x][1] = isShooted;
     }
     void visualBoard() {
+        for (int i = 0; i < 10; i++) {
+            System.out.print(i + "|");
+        }
+        System.out.println();
+        int lineNumber = 0;
         for (boolean[][] a : getGrid()) {
             for (boolean[] b : a) {
-                System.out.print("|");
 
                 if(!b[0] && !b[1])
                     System.out.print("~");
@@ -43,7 +47,7 @@ class Board {
                 System.out.print("|");
             }
 
-            System.out.println("\n");
+            System.out.println(lineNumber++);
         }
 
     }

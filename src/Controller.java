@@ -13,7 +13,7 @@ public class Controller {
         while (true) {
             System.out.println("Welcome to Battleships");
             String command = scanner.nextLine();
-            if (command.equals("StartGame")) {
+            if (command.equals("start")) {
                 System.out.println("Please, create first player with param (example: Name, My ships):");
                 //scanner.nextLine().split(", ");
                 Player player1 = new Player(scanner.nextLine());
@@ -23,47 +23,80 @@ public class Controller {
                         + " were successful created!");
                 System.out.println("So, let's get started...");
 
-                player1.setShip(0,0, 3, true);
-                //player1.outputMyBoard();
+                player1.outputMyBoard();
+                shipsCreater(player1);
+                player1.outputMyBoard();
+//                player1.setShip(0,0, 3, true);
+                player2.outputMyBoard();
+                shipsCreater(player2);
+                player2.outputMyBoard();
 
                 gameOn(player1, player2);
 
+                System.out.println(player1.getName());
                 player1.outputMyBoard();
-            } else if (command.equals("Exit")) {
+                System.out.println();
+                System.out.println(player2.getName());
+                player2.outputMyBoard();
+            } else if (command.equals("exit")) {
                 System.out.println("Bye!");
                 break;
-            }
+            } else System.out.println("Wrong command. Please, try again");
         }
     }
 
     private static void gameOn(Player player1, Player player2) {
         do {
-            Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Input coordinates (x, than y):");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
 
-            shooting(player1, player2, x, y);
+            shooting(player1, player2);
+            System.out.println(player2.getName());
+            player2.outputMyBoard();
 
-            System.out.println("Input coordinates (x, than y):");
-            x = scanner.nextInt();
-            y = scanner.nextInt();
-            shooting(player2, player1, x ,y);
-            break;
+            shooting(player2, player1);
+            System.out.println(player1.getName());
+            player1.outputMyBoard();
+            //break;
         }
         while (player1.hasAnyShip() && player2.hasAnyShip());
         System.out.println("Game Over!");
     }
 
-    private static void shooting(Player shooter, Player shooted, int x, int y) {
+    private static void shooting(Player shooter, Player shooted) {
         do {
             //shooter shooting
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Input coordinates (x, than y; ex: '5 3'):");
+            String[] command = scanner.nextLine().split(" ");
+            int x = Integer.parseInt(command[0]);
+            int y = Integer.parseInt(command[1]);
 
             shooter.setEnemyCellState(x, y, shooted.isItShip(x, y));
             shooted.hasShooted(x, y);
             break;
         }
         while (/*shooter Get collision && shooted.hasAnyShips*/true);
+    }
+
+    private static void shipsCreater(Player player) {
+        createShip(player, 4);
+        //createShip(player, 3);
+        //createShip(player, 2);
+        //createShip(player, 1);
+    }
+
+    private static void createShip(Player player, int typeOfShip) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ship type = " + typeOfShip);
+        System.out.println("Example for command: '3 2 true'");
+        for (int i = 0; i > typeOfShip - 5; i--) {
+            System.out.println("Choise start position for this ship");
+            String[] command = scanner.nextLine().split(" ");
+            int x = Integer.parseInt(command[0]);
+            int y = Integer.parseInt(command[1]);
+            boolean isHorisontal = (command[2].equals("true"));
+            player.setShip(x, y, typeOfShip, isHorisontal);
+        }
     }
 }
