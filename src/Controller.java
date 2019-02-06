@@ -26,16 +26,16 @@ public class Controller {
                             + " were successful created!");
                     System.out.println("So, let's get started...");
 
-                    shipsCreater(player1);
-                    shipsCreater(player2);
+                    shipsCreater(player1, true);
+                    shipsCreater(player2, true);
 
-                    gameOn(player1, player2);
+                    //gameOn(player1, player2);
 
-                    System.out.println(player1.getName());
-                    player1.outputMyBoard();
-                    System.out.println();
-                    System.out.println(player2.getName());
-                    player2.outputMyBoard();
+//                    System.out.println(player1.getName());
+//                    player1.outputMyBoard();
+//                    System.out.println();
+//                    System.out.println(player2.getName());
+//                    player2.outputMyBoard();
 
                     break;
                 case "exit":
@@ -59,13 +59,12 @@ public class Controller {
     }
 
     private static void shooting(Player shooter, Player shooted) {
-        Scanner scanner = new Scanner(System.in);
         String[] command;
         int x = 0;
         int y = 0;
         do {
             System.out.println(shooter.getName() + ", select cell for shoot (Ex: '0 5'):");
-            command = scanner.nextLine().trim().split(" ");
+            command = scanner();
             x = Integer.parseInt(command[0]);
             y = Integer.parseInt(command[1]);
 
@@ -73,28 +72,36 @@ public class Controller {
             shooted.writeHitMe(x, y);
             System.out.println("Enemy's Board:");
             shooter.outputEnemyBoard();
-            if (!shooted.isThatShip(x, y)) {
-                break;
-            }
+            if (!shooted.isThatShip(x, y)) break;
         }
         while (shooted.hasAnyShip());
     }
 
-    private static void shipsCreater(Player player) {
-        createShip(player, 4, 1);
-        System.out.println(player.getName());
-        player.outputMyBoard();
-        System.out.println();
-        //createShip(player, 3, 2);
-        //player.outputMyBoard();
-        //createShip(player, 2, 3);
-        //player.outputMyBoard();
-        //createShip(player, 1, 4);
-        //player.outputMyBoard();
+    private static void shipsCreater(Player player, boolean Auto) {
+        if (Auto) {
+            createShipAuto(player, 4, 1);
+            createShipAuto(player, 3, 2);
+            createShipAuto(player, 2, 3);
+            createShipAuto(player, 1, 4);
+
+            System.out.println(player.getName());
+            player.outputMyBoard();
+            System.out.println();
+        } else {
+            createShip(player, 4, 1);
+            System.out.println(player.getName());
+            player.outputMyBoard();
+            System.out.println();
+            createShip(player, 3, 2);
+            player.outputMyBoard();
+            createShip(player, 2, 3);
+            player.outputMyBoard();
+            createShip(player, 1, 4);
+            player.outputMyBoard();
+        }
     }
 
     private static void createShip(Player player, int size, int count) {
-        Scanner scanner = new Scanner(System.in);
         int x = 0;
         int y = 0;
         String[] command;
@@ -103,16 +110,37 @@ public class Controller {
             System.out.println("Please, put parameters your ship (x, y, (-/+)size)\nwhere '-' is vertical, '+' horizontal." +
                     "\nFor example: '3 2 -4'\nRepeat for " + count + " ship(s)");
             while (true) {
-                command = scanner.nextLine().trim().split(" ");
+                command = scanner();
                 x = Integer.parseInt(command[0]);
                 y = Integer.parseInt(command[1]);
                 if (command.length > 2)
                     size = -size;
-                if (!player.isThatShip(x, y, size) && player.isBoard(x, y))
+                if (!player.isThatShip(x, y, size) && player.isBoard(x, y, size))
                     break;
                 else System.out.println("Here is one ship or beyond the Board. Try again");
             }
             player.createShip(x, y, size);
         }
+    }
+
+    private static void createShipAuto(Player player, int size, int count) {
+        int x = 0;
+        int y = 0;
+        if (Math.random() > 0.5)
+            size = -size;
+        for (int i = 0; i < count; i++) {
+            do {
+                x = (int) Math.round(Math.random() * 9.0);
+                //System.out.println("X is " + x);
+                y = (int) Math.round(Math.random() * 9.0);
+                //System.out.println("Y is " + y);
+            } while (player.isThatShip(x, y, size) || !player.isBoard(x, y, size));
+            player.createShip(x, y, size);
+        }
+    }
+
+    private static String[] scanner() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().trim().split(" ");
     }
 }

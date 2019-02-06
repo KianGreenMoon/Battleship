@@ -23,6 +23,18 @@ public class Player {
         return Board.isBoard(x, y);
     }
 
+    public boolean isBoard(int x, int y, int size) {
+        for (int i = 0; i < size; i++) {
+            if (!isBoard(x + i, y))
+                return false;
+        }
+        for (int i = 0; i > size; i--) {
+            if (!isBoard(x, y - i))
+                return false;
+        }
+        return true;
+    }
+
     private Board getMyBoard() {
         return myBoard;
     }

@@ -31,7 +31,7 @@ class Board {
         try {
             getGrid()[x][y][0] = hasShip;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e + " Error in setState");
         }
     }
 
@@ -41,7 +41,7 @@ class Board {
             setState(x, y, hasShip);
             getGrid()[x][y][1] = isShooted;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e + " Error in setState");
         }
     }
 
