@@ -35,6 +35,10 @@ public class Player {
         return true;
     }
 
+    public boolean isHit(int x, int y) {
+        return getMyBoard().getState(x, y)[1];
+    }
+
     private Board getMyBoard() {
         return myBoard;
     }

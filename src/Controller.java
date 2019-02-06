@@ -26,16 +26,16 @@ public class Controller {
                             + " were successful created!");
                     System.out.println("So, let's get started...");
 
-                    shipsCreater(player1, true);
+                    shipsCreater(player1, false);
                     shipsCreater(player2, true);
 
-                    //gameOn(player1, player2);
+                    gameOn(player1, player2);
 
-//                    System.out.println(player1.getName());
-//                    player1.outputMyBoard();
-//                    System.out.println();
-//                    System.out.println(player2.getName());
-//                    player2.outputMyBoard();
+                    System.out.println(player1.getName());
+                    player1.outputMyBoard();
+                    System.out.println();
+                    System.out.println(player2.getName());
+                    player2.outputMyBoard();
 
                     break;
                 case "exit":
@@ -50,12 +50,40 @@ public class Controller {
 
     private static void gameOn(Player player1, Player player2) {
         while (player1.hasAnyShip() && player2.hasAnyShip()) {
-            shooting(player1, player2);
-            if (player2.hasAnyShip())
-                shooting(player2, player1);
+            shooting(player1, player2, false);
+            if (player2.hasAnyShip()) {
+                shooting(player2, player1, true);
+                System.out.println(player1.getName());
+                player1.outputMyBoard();
+            }
             else break;
         }
         System.out.println("Game Over!");
+    }
+
+    private static void shooting(Player shooter, Player shooted, boolean Auto) {
+        if (Auto) {
+            int x = 0;
+            int y = 0;
+            do {
+                //System.out.println(shooter.getName() + ", select cell for shoot (Ex: '0 5'):");
+                x = (int) Math.round(Math.random() * 9.0);
+                //System.out.println("X is " + x);
+                y = (int) Math.round(Math.random() * 9.0);
+                //System.out.println("Y is " + y);
+
+                if (!shooted.isHit(x, y)) {
+                    shooter.writeHit(shooted, x, y);
+                    shooted.writeHitMe(x, y);
+                    //System.out.println("Enemy's Board:");
+                    //shooter.outputEnemyBoard();
+                    if (!shooted.isThatShip(x, y)) break;
+                }
+            }
+            while (shooted.hasAnyShip());
+        } else {
+            shooting(shooter, shooted);
+        }
     }
 
     private static void shooting(Player shooter, Player shooted) {
@@ -85,20 +113,24 @@ public class Controller {
             createShipAuto(player, 1, 4);
 
             System.out.println(player.getName());
-            player.outputMyBoard();
+            player.outputMyBoard(); // This line is spoiler for debug
             System.out.println();
         } else {
-            createShip(player, 4, 1);
-            System.out.println(player.getName());
-            player.outputMyBoard();
-            System.out.println();
-            createShip(player, 3, 2);
-            player.outputMyBoard();
-            createShip(player, 2, 3);
-            player.outputMyBoard();
-            createShip(player, 1, 4);
-            player.outputMyBoard();
+            shipsCreater(player);
         }
+    }
+
+    private static void shipsCreater(Player player) {
+        createShip(player, 4, 1);
+        System.out.println(player.getName());
+        player.outputMyBoard();
+        System.out.println();
+        createShip(player, 3, 2);
+        player.outputMyBoard();
+        createShip(player, 2, 3);
+        player.outputMyBoard();
+        createShip(player, 1, 4);
+        player.outputMyBoard();
     }
 
     private static void createShip(Player player, int size, int count) {
