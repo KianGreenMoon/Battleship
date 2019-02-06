@@ -31,11 +31,12 @@ public class Controller {
 
                     //gameOn(player1, player2);
 
-                    player1.createShip(0, 0, 4);
-                    player1.outputMyBoard();
+                    //player1.createShip(0, 0, 4);
+                    shipsCreater(player1);
+                    //player1.outputMyBoard();
 
-                    player2.createShip(0, 0, -4);
-                    player2.outputMyBoard();
+                    //player2.createShip(0, 0, -4);
+                    //player2.outputMyBoard();
 
                     break;
                 case "exit":
@@ -67,20 +68,34 @@ public class Controller {
 
     private static void shipsCreater(Player player) {
         createShip(player, 4, 1);
-        //createShip(player, 3, 2);
-        //createShip(player, 2, 3);
-        //createShip(player, 1, 4);
+        player.outputMyBoard();
+        createShip(player, 3, 2);
+        player.outputMyBoard();
+        createShip(player, 2, 3);
+        player.outputMyBoard();
+        createShip(player, 1, 4);
+        player.outputMyBoard();
     }
 
     private static void createShip(Player player, int size, int count) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please, put parameters your ship (x, y, (-/+)size)\nwhere '-' is vertical, '+' horizontal." +
-                "\nFor example: '3 2 -4'\nRepeat for" + count + "ship(s)");
+        int x = 0;
+        int y = 0;
+        String[] command;
 
         for (int i = 0; i < count; i++) {
-            String[] command = scanner.nextLine().trim().split(" ");
-            int x = Integer.parseInt(command[0]);
-            int y = Integer.parseInt(command[1]);
+            System.out.println("Please, put parameters your ship (x, y, (-/+)size)\nwhere '-' is vertical, '+' horizontal." +
+                    "\nFor example: '3 2 -4'\nRepeat for " + count + " ship(s)");
+            while (true) {
+                command = scanner.nextLine().trim().split(" ");
+                x = Integer.parseInt(command[0]);
+                y = Integer.parseInt(command[1]);
+                if (command.length > 2)
+                    size = -size;
+                if (!player.isThatShip(x, y, size) && player.isBoard(x, y))
+                    break;
+                else System.out.println("Here is one ship or beyond the Board. Try again");
+            }
             player.createShip(x, y, size);
         }
     }

@@ -5,7 +5,8 @@
 package bones;
 
 class Board {
-    private boolean grid[][][] = new boolean[10][10][2];
+    private static int len = 10;
+    private boolean grid[][][] = new boolean[len][len][2];
 
     boolean[][][] getGrid() {
         return grid;
@@ -18,6 +19,11 @@ class Board {
         } catch (Exception e) {
             return new boolean[]{false, false};
         }
+    }
+
+    static boolean isBoard(int x, int y) {
+        //Is not correct for asymmetric board
+        return len > x && len > y;
     }
 
     void setState(int x, int y, boolean hasShip) {

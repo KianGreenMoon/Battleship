@@ -19,12 +19,32 @@ public class Player {
         return name;
     }
 
+    public boolean isBoard(int x, int y) {
+        return Board.isBoard(x, y);
+    }
+
     private Board getMyBoard() {
         return myBoard;
     }
 
     private Board getEnemyBoard() {
         return enemyBoard;
+    }
+
+    private boolean isThatShip(int x, int y) {
+        return getMyBoard().getState(x, y)[0];
+    }
+
+    public boolean isThatShip(int x, int y, int size) {
+        for (int i = 0; i < size; i++) {
+            if (isThatShip(x + i, y))
+                return true;
+        }
+        for (int i = 0; i > size; i--) {
+            if (isThatShip(x, y - i))
+                return true;
+        }
+        return false;
     }
 
     private void setName(String name) {
@@ -35,12 +55,18 @@ public class Player {
         getMyBoard().setState(x, y, true);
     }
 
+    /**
+     * '-' is vertical, '+' horizontal ship.
+     * For example: '3 2 -4 for vertical ship in 4 cells'
+     */
     public void createShip(int x, int y, int size) {
-        for (int i = 0; i < size; i++) {
-            create1thSizeShip(x + i, y);
-        }
-        for (int i = 0; i > size; i--) {
-            create1thSizeShip(x, y - i);
+        if (!isThatShip(x, y, size) && Board.isBoard(x, y)) {
+            for (int i = 0; i < size; i++) {
+                create1thSizeShip(x + i, y);
+            }
+            for (int i = 0; i > size; i--) {
+                create1thSizeShip(x, y - i);
+            }
         }
     }
 
