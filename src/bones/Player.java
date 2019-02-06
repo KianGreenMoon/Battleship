@@ -19,7 +19,7 @@ public class Player {
         return name;
     }
 
-    public boolean isBoard(int x, int y) {
+    private boolean isBoard(int x, int y) {
         return Board.isBoard(x, y);
     }
 
