@@ -31,7 +31,7 @@ public class Player {
         return enemyBoard;
     }
 
-    private boolean isThatShip(int x, int y) {
+    public boolean isThatShip(int x, int y) {
         return getMyBoard().getState(x, y)[0];
     }
 
@@ -68,6 +68,14 @@ public class Player {
                 create1thSizeShip(x, y - i);
             }
         }
+    }
+
+    public void writeHit(Player player, int x, int y) {
+        getEnemyBoard().setState(x, y, player.isThatShip(x, y), true);
+    }
+
+    public void writeHitMe(int x, int y) {
+        getMyBoard().setState(x, y, getMyBoard().getState(x, y)[0], true);
     }
 
     public void outputMyBoard() {

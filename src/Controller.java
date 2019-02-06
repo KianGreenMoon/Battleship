@@ -26,17 +26,16 @@ public class Controller {
                             + " were successful created!");
                     System.out.println("So, let's get started...");
 
-                    //shipsCreater(player1);
-                    //shipsCreater(player2);
-
-                    //gameOn(player1, player2);
-
-                    //player1.createShip(0, 0, 4);
                     shipsCreater(player1);
-                    //player1.outputMyBoard();
+                    shipsCreater(player2);
 
-                    //player2.createShip(0, 0, -4);
-                    //player2.outputMyBoard();
+                    gameOn(player1, player2);
+
+                    System.out.println(player1.getName());
+                    player1.outputMyBoard();
+                    System.out.println();
+                    System.out.println(player2.getName());
+                    player2.outputMyBoard();
 
                     break;
                 case "exit":
@@ -50,31 +49,48 @@ public class Controller {
     }
 
     private static void gameOn(Player player1, Player player2) {
-        do {
+        while (player1.hasAnyShip() && player2.hasAnyShip()) {
             shooting(player1, player2);
-            shooting(player2, player1);
-            break;
+            if (player2.hasAnyShip())
+                shooting(player2, player1);
+            else break;
         }
-        while (player1.hasAnyShip() && player2.hasAnyShip());
         System.out.println("Game Over!");
     }
 
     private static void shooting(Player shooter, Player shooted) {
+        Scanner scanner = new Scanner(System.in);
+        String[] command;
+        int x = 0;
+        int y = 0;
         do {
-            break;
+            System.out.println(shooter.getName() + ", select cell for shoot (Ex: '0 5'):");
+            command = scanner.nextLine().trim().split(" ");
+            x = Integer.parseInt(command[0]);
+            y = Integer.parseInt(command[1]);
+
+            shooter.writeHit(shooted, x, y);
+            shooted.writeHitMe(x, y);
+            System.out.println("Enemy's Board:");
+            shooter.outputEnemyBoard();
+            if (!shooted.isThatShip(x, y)) {
+                break;
+            }
         }
-        while (/*shooter Get collision && shooted.hasAnyShips*/true);
+        while (shooted.hasAnyShip());
     }
 
     private static void shipsCreater(Player player) {
         createShip(player, 4, 1);
+        System.out.println(player.getName());
         player.outputMyBoard();
-        createShip(player, 3, 2);
-        player.outputMyBoard();
-        createShip(player, 2, 3);
-        player.outputMyBoard();
-        createShip(player, 1, 4);
-        player.outputMyBoard();
+        System.out.println();
+        //createShip(player, 3, 2);
+        //player.outputMyBoard();
+        //createShip(player, 2, 3);
+        //player.outputMyBoard();
+        //createShip(player, 1, 4);
+        //player.outputMyBoard();
     }
 
     private static void createShip(Player player, int size, int count) {
