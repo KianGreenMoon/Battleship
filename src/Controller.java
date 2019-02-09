@@ -4,6 +4,7 @@
 
 import bones.Player;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Controller {
@@ -32,10 +33,10 @@ public class Controller {
                     gameOn(player1, player2);
 
                     System.out.println(player1.getName());
-                    player1.outputMyBoard();
+                    visualStrings(player1.outputMyBoard());
                     System.out.println();
                     System.out.println(player2.getName());
-                    player2.outputMyBoard();
+                    visualStrings(player2.outputMyBoard());
 
                     break;
                 case "exit":
@@ -48,13 +49,18 @@ public class Controller {
         }
     }
 
+    private static void visualStrings(LinkedList<String> linkedList) {
+        for (String str : linkedList)
+            System.out.println(str);
+    }
+
     private static void gameOn(Player player1, Player player2) {
         while (player1.hasAnyShip() && player2.hasAnyShip()) {
             shooting(player1, player2, false);
             if (player2.hasAnyShip()) {
                 shooting(player2, player1, true);
                 System.out.println(player1.getName());
-                player1.outputMyBoard();
+                visualStrings(player1.outputMyBoard());
             }
             else break;
         }
@@ -99,7 +105,7 @@ public class Controller {
             shooter.writeHit(shooted, x, y);
             shooted.writeHitMe(x, y);
             System.out.println("Enemy's Board:");
-            shooter.outputEnemyBoard();
+            visualStrings(shooter.outputEnemyBoard());
             if (!shooted.isThatShip(x, y)) break;
         }
         while (shooted.hasAnyShip());
@@ -113,7 +119,7 @@ public class Controller {
             createShipAuto(player, 1, 4);
 
             System.out.println(player.getName());
-            player.outputMyBoard(); // This line is spoiler for debug
+            visualStrings(player.outputMyBoard()); // This line is spoiler for debug
             System.out.println();
         } else {
             shipsCreater(player);
@@ -123,14 +129,14 @@ public class Controller {
     private static void shipsCreater(Player player) {
         createShip(player, 4, 1);
         System.out.println(player.getName());
-        player.outputMyBoard();
+        visualStrings(player.outputMyBoard());
         System.out.println();
         createShip(player, 3, 2);
-        player.outputMyBoard();
+        visualStrings(player.outputMyBoard());
         createShip(player, 2, 3);
-        player.outputMyBoard();
+        visualStrings(player.outputMyBoard());
         createShip(player, 1, 4);
-        player.outputMyBoard();
+        visualStrings(player.outputMyBoard());
     }
 
     private static void createShip(Player player, int size, int count) {

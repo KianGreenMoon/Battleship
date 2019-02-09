@@ -4,6 +4,8 @@
 
 package bones;
 
+import java.util.LinkedList;
+
 public class Player {
     private String name;
     private Board myBoard;
@@ -94,12 +96,12 @@ public class Player {
         getMyBoard().setState(x, y, getMyBoard().getState(x, y)[0], true);
     }
 
-    public void outputMyBoard() {
-        getMyBoard().visualBoard();
+    public LinkedList<String> outputMyBoard() {
+        return getMyBoard().visualBoard();
     }
 
-    public void outputEnemyBoard() {
-        getEnemyBoard().visualBoard();
+    public LinkedList<String> outputEnemyBoard() {
+        return getEnemyBoard().visualBoard();
     }
 
     public boolean hasAnyShip() {

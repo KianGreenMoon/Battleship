@@ -4,6 +4,8 @@
 
 package bones;
 
+import java.util.LinkedList;
+
 class Board {
     private static int len = 10;
     private boolean grid[][][] = new boolean[len][len][2];
@@ -45,28 +47,33 @@ class Board {
         }
     }
 
-    void visualBoard() {
+    LinkedList<String> visualBoard() {
+        LinkedList<String> response = new LinkedList<>();
+        StringBuilder line = new StringBuilder();
         for (int i = 0; i < 10; i++) {
-            System.out.print(i + "|");
+            line.append(i).append("|");
         }
-        System.out.println();
+        response.addLast(line.toString());
+        //System.out.println();
         int lineNumber = 0;
         for (boolean[][] a : getGrid()) {
+            line = new StringBuilder();
             for (boolean[] b : a) {
                 //cell0 is ship; cell1 is shooted
                 if (!b[0] && !b[1])         //cell0 == false; cell1 == false;
-                    System.out.print("~");
+                    line.append("~");
                 else if (!b[0])             //cell0 == false; cell1 == true;
-                    System.out.print("*");
+                    line.append("*");
                 else if (b[1])              //cell0 == true; cell1 == true;
-                    System.out.print("X");
-                else System.out.print("#"); //cell0 == true; cell1 == false;
+                    line.append("X");
+                else line.append("#");      //cell0 == true; cell1 == false;
 
-                System.out.print("|");
+                line.append("|");
             }
 
-            System.out.println(lineNumber++);
+            line.append(String.valueOf(lineNumber++));
+            response.addLast(line.toString());
         }
-
+        return response;
     }
 }
