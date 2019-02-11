@@ -47,17 +47,14 @@ class Board {
         }
     }
 
-    LinkedList<String> visualBoard() {
-        LinkedList<String> response = new LinkedList<>();
+    String visualBoard() {
         StringBuilder line = new StringBuilder();
         for (int i = 0; i < 10; i++) {
             line.append(i).append("|");
         }
-        response.addLast(line.toString());
-        //System.out.println();
+        line.append("\n");
         int lineNumber = 0;
         for (boolean[][] a : getGrid()) {
-            line = new StringBuilder();
             for (boolean[] b : a) {
                 //cell0 is ship; cell1 is shooted
                 if (!b[0] && !b[1])         //cell0 == false; cell1 == false;
@@ -71,9 +68,8 @@ class Board {
                 line.append("|");
             }
 
-            line.append(String.valueOf(lineNumber++));
-            response.addLast(line.toString());
+            line.append(lineNumber++).append("\n");
         }
-        return response;
+        return line.toString();
     }
 }

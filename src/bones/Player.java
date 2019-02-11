@@ -96,11 +96,11 @@ public class Player {
         getMyBoard().setState(x, y, getMyBoard().getState(x, y)[0], true);
     }
 
-    public LinkedList<String> outputMyBoard() {
+    public String outputMyBoard() {
         return getMyBoard().visualBoard();
     }
 
-    public LinkedList<String> outputEnemyBoard() {
+    public String outputEnemyBoard() {
         return getEnemyBoard().visualBoard();
     }
 
